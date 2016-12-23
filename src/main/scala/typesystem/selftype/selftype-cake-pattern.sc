@@ -1,0 +1,28 @@
+trait Persistence { def startPersistence(): Unit }              // 1.
+trait Midtier { def startMidtier(): Unit }
+trait UI { def startUI(): Unit }
+
+trait Database extends Persistence {                            // 2.
+  def startPersistence(): Unit = println("Starting Database")
+}
+
+trait BizLogic extends Midtier {
+  def startMidtier(): Unit = println("Starting BizLogic")
+}
+
+trait WebUI extends UI {
+  def startUI(): Unit = println("Starting WebUI")
+}
+
+//trait App extends Persistence with Midtier with UI {
+trait App { self :Persistence with Midtier with UI =>           // 3.
+  def run(): Unit = {
+    startPersistence()
+    startMidtier()
+    startUI()
+  }
+}
+
+object MyApp extends App with Database with BizLogic with WebUI // 4.
+
+MyApp.run()                                                     // 5.

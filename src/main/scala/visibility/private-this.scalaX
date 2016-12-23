@@ -1,0 +1,31 @@
+// src/main/scala/visibility/private-this.scalaX
+package scopeA {
+
+  class PrivateClass1(private[this] val privateRield1: Int) {
+    private[this] val privateField2 = 1
+
+    def equalFields(other: PrivateClass1) =       // error
+      (privateField1 == other.privateField1) &&   // error
+        (privateField2 == other.privateField2) && // error
+        (nested == other.nested)                  // error
+
+    class Nested {
+      private[this] val nestedField = 1
+    }
+
+    private[this] val nested = new Nested
+  }
+
+  class PrivateClass2 extends PrivateClass1(1) {
+    val field1 = privateField1    // error
+    val field2 = privateField2    // error
+    val nField = new Nested().nestedField    // error
+  }
+
+  class PrivateClass3 {
+    val privateClass1 = new PrivateClass1(1)
+    val privateField1 = privateClass1.privateField1       // error
+    val privateField2 = privateClass1.privateField2       // error
+    val privateNField = privateClass1.nested.nestedField  // error
+  }
+}

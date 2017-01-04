@@ -185,13 +185,13 @@ case final class Some(val value: ???) {
 - 타입 매개변수를 생성자의 인자에 사용해야 하는 경우: **매개변수화한 타입** 이 좋은 접근방법
 
 #### ex2> 여러 타입이 밀접한 연관이 있는 타입(패밀리)
-[`typelessdomore/abstract-types.sc`](../src/main/scala/typelessdomore/SubjectObserver.scalaX)
+[typelessdomore/abstract-types.sc](../src/main/scala/typelessdomore/SubjectObserver.scalaX)
 
 - `BulkReader`에서 타입 바운드가 없는 추상타입 `In`은 서브타입 `StringBulkReader`, `FileBulkReader`에서 그 추상 타입을 정의
 - 사용자가 더 이상 타입 매개변수를 사용해서 타입을 지정하지 않지만, 타입 멤버 `In`과 그 멤버를 내포하는 클래스를 마음대로 제어 가능: 여러 구현에서 일관성이 유지된다
 
 #### ex3> `Observer` 패턴 설계
-[`SubjectObserver.scalaX`](../src/main/scala/typesystem/abstracttypes/SubjectObserver.scalaX)  
+[SubjectObserver.scalaX](../src/main/scala/typesystem/abstracttypes/SubjectObserver.scalaX)  
 
 - `_.receiveUpdate(this)` compile error
 	- 주체와 관찰자에 대해 바운드된 추상 타입 멤버를 사용함으로써 구체적인 타입을 그 두 추상 타입(특히 `S` )에 지정한 경우 `Observer.receiveUpdate(subject: S)`가 덜 유용한 부모 타입인 `Subject`가 아니라 주체가 가져야 할 정확한 타입이 되게 만드는 것
@@ -199,21 +199,21 @@ case final class Some(val value: ???) {
 	- 다음 절 **자기 타입 표기** 를 통해 해결 해 보자
 
 ## 14.6 자기 타입 표기
-### `this`
+#### `this`
 - 특정 메서드 내에서 자신의 인스턴스를 참조
 - 어떤 영역 내에서 같은 이름의 대상이 여럿 참조되는 경우 스스로를 참조할 때 모호성 제거
 
-### `self`
-#### 목적
+#### 자기타입 표기(self type annotation)의 목적
 - `this`에 대해 예상하는 타입이 무엇인지 추가로 지정
 - `this`에 대한 별명 지정
 
-[`SubjectObserver.scala`](../src/main/scala/typesystem/selftype/SubjectObserver.scala)
-1. `self: S`: `Subject`가 실제로 `Subject`를 혼합한 구체적 클래스인 **스스로의 서브타입 `S`** 의 인스턴스가 될 것이라고 가정
+##### 14.5 절의 [SubjectObserver.scalaX](../src/main/scala/typesystem/abstracttypes/SubjectObserver.scalaX)의 오류 해결
+[SubjectObserver.scala](../src/main/scala/typesystem/selftype/SubjectObserver.scala)
 
-[`ButtonSubjectObserver.scala`](../src/main/scala/typesystem/selftype/ButtonSubjectObserver.scala)
+[ButtonSubjectObserver.scala](../src/main/scala/typesystem/selftype/ButtonSubjectObserver.scala)
 
-[`selftype-cake-pattern.sc`](../src/main/scala/typesystem/selftype/selftype-cake-pattern.sc)  
+##### '모듈'을 지정하고 서로 엮기위한 패턴 예제
+[selftype-cake-pattern.sc](../src/main/scala/typesystem/selftype/selftype-cake-pattern.sc)  
 
 - `App`트레이트는 추상 트레이트로 구성된 인프라의 여러 계층을 하나로 엮는다
 - `App.run`은 엮인 각 계층 내의 `start*`메서드를 호출함으로써 계층을 시작한다(어떤 구체적 트레이트도 사용되지 않음)
@@ -232,7 +232,7 @@ case final class Some(val value: ???) {
 > **상속**: 서브타입 관계를 암시   
 
 ### `this`에 대한 별명
-[`this-alias.sc`](../src/main/scala/typesystem/selftype/this-alias.sc)
+[this-alias.sc](../src/main/scala/typesystem/selftype/this-alias.sc)
 
 #### 자기 타입 지정이 없다면… `C1.talk`를 `C3.talk` 내부에서 호출 가능할까?
 - 두 메서드의 이름이 같아서 후자가 전자를 가리기 때문에 호출 불가능
@@ -243,7 +243,7 @@ case final class Some(val value: ???) {
 - 동적 언어의 **duck typing** 에 대한 type safe한 버전: 타입의 구조(필드, 메서드 등)를 판단여 객체를 구분할 수 있게 되면 이름은 몰라도 된다
 - 스칼라는 구조를 통한 타입 유추를 **컴파일 시점** 에 판단하는 비슷한 메커니즘을 지원
 
-[`Observer.scala`](../src/main/scala/typesystem/structuraltypes/Observer.scala)  
+[Observer.scala](../src/main/scala/typesystem/structuraltypes/Observer.scala)  
 
 - `Subject`의 상태 변경을 보고 싶은 타입은 반드시 `Observer`를 구현해야 했으나,   `receiverUpdate`메서드만 구현함으로써 해결
 
@@ -254,7 +254,7 @@ case final class Some(val value: ???) {
 #### 장점
 - 두 존재 사이의 결합을 최소화(메서드 시그니처 등에 의해서만 결합)
 
-[`SubjectFunc.sc`](../src/main/scala/typesystem/structuraltypes/SubjectFunc.sc)   
+[SubjectFunc.sc](../src/main/scala/typesystem/structuraltypes/SubjectFunc.sc)   
 
 - 이름을 바탕으로 한 모든 연결 제거
 - 리플렉션을 통한 호출 불필요: 인자 타입으로 `Any` 사용 대신 `State`를 사용 가능
@@ -299,7 +299,7 @@ val subject = new Subject {
 }
 // subject: typesystem.structuraltypes.Subject{type State = Int; def increment(): Unit} = typesystem.compoundtypes.A$A14$A$A14$$anon$2@5fa6d905
 ```
-[`compound-types.sc`](../src/main/scala/typesystem/compoundtypes/compound-types.sc)
+[compound-types.sc](../src/main/scala/typesystem/compoundtypes/compound-types.sc)
 
 - 반환되는 타입 시그니처에도 구조적으로 추가된 부분 추가
 - 비슷하게, 인스턴스 생성 시 트레이트를 혼합하면 세분화한 타입 생성 <???>
@@ -310,7 +310,7 @@ val subject = new Subject {
 - 타입 이름을 모르고, 현재 문맥에서는 그에 대해 알 필요도 없을 때 사용
 - 자바와의 연동에 중요 (제네릭스를 지원하면서 타입 시스템의 정확성 유지)
 
-[`Doubler.scala`](../src/main/scala/typesystem/existentials/Doubler.scala)  
+[Doubler.scala](../src/main/scala/typesystem/existentials/Doubler.scala)  
 
 - 같은 이름을 가진 두 메서드 인자가 원소 타입이 다른 List와 같은 컬렉션인 경우 타입 소거로 인해 오버로딩을 하지 못함
 - 리스트의 각 원소를 개별적으로 검사하는 방식으로도 해결 가능

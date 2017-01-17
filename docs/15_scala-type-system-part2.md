@@ -138,7 +138,7 @@ package pkg {
 
 ### 15.3.1 싱글턴 타입
 - **싱글턴 객체** 와는 다르다 **싱글턴 객체** 와는... (싱글턴 객체: `object`로 선언)
-- `AnyRef`의 서브타입인 인스턴스 `v`에는 가각 고유의 **싱글턴 타입** 이 존재(null 포함)
+- `AnyRef`의 서브타입인 인스턴스 `v`에는 각각 고유의 **싱글턴 타입** 이 존재(null 포함)
 - `v.type`을 사용해 해당 타입 사용(타입 지정을 `v`가 지정하는 오직 **한** 인스턴스에만 한정함)
 
 [type-types.sc](../src/main/scala/typesystem/valuetypes/type-types.sc)
@@ -165,7 +165,7 @@ val t2: (String, Int, Double)       = ("one", 2, 3.14)
 val f1: Function[Int, Double, String] = (i, d) => s"int $i, double $d"
 val f2: (Int, Double) => String       = (i, d) => s"int $i, double $d"
 ```
-- 함수의 타입은 화살표 표기(`->`)로 축약 가능
+- 함수의 타입은 화살표 표기(`=>`)로 축약 가능
 
 ### 15.4.3 중위 타입
 ```scala

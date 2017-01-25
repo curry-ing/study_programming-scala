@@ -98,6 +98,40 @@ Person  + (doberman, yorkie, ...) == (dorberman, yorkie, ...) + Person
   - `f: A -> B`, `g: B -> C`, `h: C -> D` 에 대해 `(f ◦ g) ◦ h = f ◦ (g ◦ h)`
 
 ### 16.2.2 펑터 카테고리
+- 펑터는 `map` 연산을 추상화
+- 15.6 절 **타입 람다** 참조
+- 다음 예제에서는 먼저 추상화를 정의하고 그 다음 세 가지 구체적인 타입 `Seq`, `Optoin`, `A=>B`를 구현
+
+[Functor.scala](../src/main/scala/fp/categories/Functor.scala)
+
+- `FunctionF`는 단순하지 않다
+- 초기 타입 `A`를 바꾸려는 것이 아니고 `A2`를 입력으로 받는 두 번째 함수 `f`를 `func`의 `A2` 출력에 연쇄시키려는 것
+- `map`연산이 들어있는 매개변수화한 타입: **펑터**
+
+[Functor.sc](../src/main/scala/fp/categories/Functor.sc)
+
+```scala
+def map[A, B](seq: Seq[A])(f: A => B): Seq[B] = seq map f
+
+def map[A, B](f: A => B)(seq: Seq[A]): Seq[B] = seq map f
+```
+- 위 두번째 예제에서 반환되는 새 함수의 타입 : `Seq[Int] => Seq[Double] = <function1>`
+- `map`메서드는 `A => B`라는 함수를 `Seq[A] => Seq[B]`로 **끌어올림**
+- 일반적으로 `Functor.map`은 대부분의 `F`에 대해 `A => B`로, 모든 타입 A와 B에 대해 `F[A] => F[B]`로 사상시킨다
+  - **펑터** 를 사용하면 순수함수 `(f: A => B)`를 하나 이상의 `A`값을 포함하는 *맥락* 에 적용할 수 있다.
+  - `f`를 적용하고, 그 결과를 *맥락* 의 새 인스턴스에 넣기 위해 이런 값을 직접 뽑아낼 필요는 없다
+  -> **펑터 라는 용어는 순수 함수를 이런 방식으로 사용할 수 있게 해주는 추상화**
+
+##### 카테고리 이론의 용어로 표현하자면...
+- 다른 카테고리: **대상**
+- 카테고리 사이의 매핑: **사상**
+- `List[Int]`와 `List[String]`은 각각의 대상이 모든 `Int`의 리스트와 모든 `String`의 리스트인 두 카테고리
+
+- Functor는 카테고리 이론의 공통 특성ㅇ과 정리 외에 다음 두 특성을 추가로 만족
+  1. 펑터 F는 단위원(항등원)을 유지. 즉, **정의역** 의 단위원은 **공역** 의 단위원으로 사상
+  2. 펑터 F는 합성을 유지한다. 즉, `F(f ◦ g) = F(f) ◦ F(g)`
+
+[FunctorProperties.scala](../src/main/scala/fp/categories/FunctorProperties.scala)
 
 ### 16.2.3 모나드 카테고리
 

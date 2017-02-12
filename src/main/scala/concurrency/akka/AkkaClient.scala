@@ -48,7 +48,7 @@ object AkkaClient {     // AkkaClient가 객체이므로 main정의 가능
       case "h" | "help" => println(help)              // 도움말 요청 검사
       case dumpRE(n) => server ! (if (n == null) DumpAll else Dump(n.trim.toInt))  // 상태를 덤프하라고 하나 혹은 모든 작업 액터에 요청
                                                                                    // 각각의 상태는 key-value의 data store
-      case badCrashRE() => missinNumber()    //
+      case badCrashRE() => missingActorNumber()    //
       case crashRE(n) => server ! Crash(n.toInt)
       case charNumberStringRE(c, n, s) => c match {     // 명령에 글자 & 수 & 문자열이 모두 들어온 경우 처리
         case "c" | "C" => server ! Create(n.toInt, s)   // 생성

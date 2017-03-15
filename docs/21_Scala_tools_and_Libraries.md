@@ -1,10 +1,10 @@
 # 21 스칼라 도구와 라이브러리
 
 > **학습목표**
-- `scalac` 컴파일러, `scala` REPL
-- build tool, IDE, editors
-- 스칼라 테스트 라이브러리
-- 3rd-party scala libraries
+>- `scalac` 컴파일러, `scala` REPL
+>- build tool, IDE, editors
+>- 스칼라 테스트 라이브러리
+>- 3rd-party scala libraries
 
 ## 21.1 명령행 도구
 - IDE, SBT Repl에 익숙하더라도 여러 상황에 대한 유연한 대처 가능
